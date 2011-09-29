@@ -18,6 +18,8 @@
 # ClientLogin by Evan Kaufman
 # http://github.com/EvanK/redmine-authsource-clientlogin
 
+# Quick bug fix (based on http://www.redmine.org/issues/6196 ) by Naresh V.
+
 require 'gdata/auth'
 require 'gdata/http'
 
@@ -57,13 +59,13 @@ class AuthSourceClientLogin < AuthSource
       full_name = contact_name == nil ? [] : contact_name.first.value.split(/\s+/, 2)
       
       # assemble & return user attributes as best we could determine them
-      attrs = [
+      attrs = {
         :login => login,
         :mail => login,
         :firstname => full_name[0] || '',
         :lastname => full_name[1] || '',
         :auth_source_id => self.id
-      ]
+      }
       return attrs
     rescue => e
       logger.error "Error during authentication: #{e.message}"
